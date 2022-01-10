@@ -1,1 +1,1 @@
-docker build -t yapi-container . && docker run -it --init -p 3000:80 yapi-container
+docker build -t yepi-container . && docker run -it --init -p 3000:80 yepi-container
