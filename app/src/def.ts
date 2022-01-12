@@ -1,5 +1,5 @@
 
-export interface QuoteData {
+export interface QuoteDataRaw {
     quote: string,
     date: string,
     source: "Twitter" | "Live" | "Interview" | "Other" | "Song",
@@ -7,7 +7,7 @@ export interface QuoteData {
     metadata: undefined | Metadata
 }
 
-export interface QuoteDataDate {
+export interface QuoteData {
     quote: string,
     date: Date,
     source: "Twitter" | "Live" | "Interview" | "Other" | "Song",

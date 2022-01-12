@@ -1,6 +1,7 @@
 import "https://raw.githubusercontent.com/daychongyang/dotenv/master/load.ts";
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import { QuoteData, QuoteDataDate } from "./def.ts";
+import { readCSVObjects } from "https://deno.land/x/csv/mod.ts";
+import { QuoteData, QuoteDataRaw } from "./def.ts";
 import { StatisticsService } from "./statistics.ts";
 
 const app = new Application();
@@ -23,10 +24,10 @@ app.use(router.allowedMethods());
 
 await app.listen({ port: PORT });
 
-async function loadTestingData(): Promise<QuoteDataDate[]> {
+async function loadTestingData(): Promise<QuoteData[]> {
     const text = await Deno.readTextFile(Deno.cwd().concat("/src/testing/test.json"));
-    const raw: QuoteData[] = JSON.parse(text);
-    const parsed: QuoteDataDate[] = [];
+    const raw: QuoteDataRaw[] = JSON.parse(text);
+    const parsed: QuoteData[] = [];
     raw.forEach(e => {
         console.log(e.date)
         parsed.push({
