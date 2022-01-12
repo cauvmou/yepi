@@ -49,7 +49,7 @@ var mod_ts_2 = require("https://deno.land/x/csv/mod.ts");
 var statistics_ts_1 = require("./statistics.ts");
 var app = new mod_ts_1.Application();
 var router = new mod_ts_1.Router();
-var testData = await loadTestingData();
+var testData = await loadData();
 var stats = new statistics_ts_1.StatisticsService(app);
 var PORT = Number.parseInt(Deno.env.get("DEV_PORT") || "80", 10);
 router.get('/api/random', function (context) {
@@ -61,15 +61,15 @@ stats.route(router);
 app.use(router.routes());
 app.use(router.allowedMethods());
 await app.listen({ port: PORT });
-function loadTestingData() {
+function loadData() {
     var e_1, _a, e_2, _b;
     return __awaiter(this, void 0, Promise, function () {
-        var parsed, f, options, _c, _d, row, blob, row_1, row_1_1, cell, e_2_1, raw_date, date, metadata, e_1_1;
+        var parsed, f, options, _c, _d, row, blob, row_1, row_1_1, cell, e_2_1, rawDate, date, metadata, e_1_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
                     parsed = [];
-                    return [4 /*yield*/, Deno.open(Deno.cwd().concat("/src/testing/quotes.csv"))];
+                    return [4 /*yield*/, Deno.open(Deno.cwd().concat("/data/quotes.csv"))];
                 case 1:
                     f = _e.sent();
                     options = {
@@ -117,8 +117,8 @@ function loadTestingData() {
                     return [7 /*endfinally*/];
                 case 15: return [7 /*endfinally*/];
                 case 16:
-                    raw_date = blob[0].split(".");
-                    date = new Date(raw_date[1] + " " + raw_date[0] + " " + raw_date[2]);
+                    rawDate = blob[0].split(".");
+                    date = new Date(rawDate[1] + " " + rawDate[0] + " " + rawDate[2]);
                     metadata = {
                         album: blob[4] ? blob[4] : undefined,
                         songName: blob[3] ? blob[3] : undefined,

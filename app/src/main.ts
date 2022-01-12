@@ -6,7 +6,7 @@ import { StatisticsService } from "./statistics.ts";
 
 const app = new Application();
 const router = new Router();
-const testData = await loadTestingData();
+const testData = await loadData();
 const stats = new StatisticsService(app);
 
 const PORT = Number.parseInt(Deno.env.get("DEV_PORT") || "80", 10);
@@ -24,10 +24,10 @@ app.use(router.allowedMethods());
 
 await app.listen({ port: PORT });
 
-async function loadTestingData(): Promise<QuoteData[]> {
+async function loadData(): Promise<QuoteData[]> {
     const parsed: QuoteData[] = [];
 
-    const f = await Deno.open(Deno.cwd().concat("/src/testing/quotes.csv"));
+    const f = await Deno.open(Deno.cwd().concat("/data/quotes.csv"));
 
     
     const options: Partial<CommonCSVReaderOptions> = {
@@ -41,8 +41,8 @@ async function loadTestingData(): Promise<QuoteData[]> {
         for await (const cell of row) {
             blob.push(cell)
         }
-        const raw_date = blob[0].split(".")
-        const date = new Date(`${raw_date[1]} ${raw_date[0]} ${raw_date[2]}`)
+        const rawDate = blob[0].split(".")
+        const date = new Date(`${rawDate[1]} ${rawDate[0]} ${rawDate[2]}`)
         const metadata: Metadata = {
             album: blob[4] ? blob[4] : undefined,
             songName: blob[3] ? blob[3] : undefined,

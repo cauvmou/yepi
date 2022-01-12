@@ -2,14 +2,14 @@ import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import { HealthzObject } from "./def.ts";
 export class StatisticsService {
 
-    numberOfRequests: number = 0;
-    averageTime: number = 0;
+    numberOfRequests = 0;
+    averageTime = 0;
     startTime: number = Date.now();
     endTime: number = Date.now();
 
     constructor(app: Application) {
         console.log("Constructing Stats");
-        app.use(async (ctx, next) => {
+        app.use(async (_ctx, next) => {
             this.numberOfRequests++;
             this.startTime = Date.now();
 
@@ -20,7 +20,7 @@ export class StatisticsService {
 
     initialize(app: Application) {
         console.log("Initializing Stats");
-        app.use(async (ctx, next) => {
+        app.use(async (_ctx, next) => {
             this.endTime = Date.now();
             const time = this.endTime - this.startTime;
             this.averageTime += time;
