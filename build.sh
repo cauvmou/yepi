@@ -1,1 +1,1 @@
-docker build -t yepi-container . && docker run -it --init -p 3000:80 yepi-container
+docker build -t yepi-container . && docker container prune && docker run -it --init -p 3000:80 --name yepi-container yepi-container

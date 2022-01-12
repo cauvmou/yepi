@@ -35,9 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 exports.__esModule = true;
 require("https://raw.githubusercontent.com/daychongyang/dotenv/master/load.ts");
 var mod_ts_1 = require("https://deno.land/x/oak/mod.ts");
+var mod_ts_2 = require("https://deno.land/x/csv/mod.ts");
 var statistics_ts_1 = require("./statistics.ts");
 var app = new mod_ts_1.Application();
 var router = new mod_ts_1.Router();
@@ -54,24 +62,95 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 await app.listen({ port: PORT });
 function loadTestingData() {
+    var e_1, _a, e_2, _b;
     return __awaiter(this, void 0, Promise, function () {
-        var text, raw, parsed;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, Deno.readTextFile(Deno.cwd().concat("/src/testing/test.json"))];
-                case 1:
-                    text = _a.sent();
-                    raw = JSON.parse(text);
+        var parsed, f, options, _c, _d, row, blob, row_1, row_1_1, cell, e_2_1, raw_date, date, metadata, e_1_1;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
                     parsed = [];
-                    raw.forEach(function (e) {
-                        console.log(e.date);
-                        parsed.push({
-                            quote: e.quote,
-                            source: e.source,
-                            metadata: e.metadata,
-                            date: new Date(e.date)
-                        });
+                    return [4 /*yield*/, Deno.open(Deno.cwd().concat("/src/testing/quotes.csv"))];
+                case 1:
+                    f = _e.sent();
+                    options = {
+                        columnSeparator: ";",
+                        lineSeparator: "\r\n",
+                        quote: "$"
+                    };
+                    _e.label = 2;
+                case 2:
+                    _e.trys.push([2, 19, 20, 25]);
+                    _c = __asyncValues(mod_ts_2.readCSV(f, options));
+                    _e.label = 3;
+                case 3: return [4 /*yield*/, _c.next()];
+                case 4:
+                    if (!(_d = _e.sent(), !_d.done)) return [3 /*break*/, 18];
+                    row = _d.value;
+                    blob = [];
+                    _e.label = 5;
+                case 5:
+                    _e.trys.push([5, 10, 11, 16]);
+                    row_1 = (e_2 = void 0, __asyncValues(row));
+                    _e.label = 6;
+                case 6: return [4 /*yield*/, row_1.next()];
+                case 7:
+                    if (!(row_1_1 = _e.sent(), !row_1_1.done)) return [3 /*break*/, 9];
+                    cell = row_1_1.value;
+                    blob.push(cell);
+                    _e.label = 8;
+                case 8: return [3 /*break*/, 6];
+                case 9: return [3 /*break*/, 16];
+                case 10:
+                    e_2_1 = _e.sent();
+                    e_2 = { error: e_2_1 };
+                    return [3 /*break*/, 16];
+                case 11:
+                    _e.trys.push([11, , 14, 15]);
+                    if (!(row_1_1 && !row_1_1.done && (_b = row_1["return"]))) return [3 /*break*/, 13];
+                    return [4 /*yield*/, _b.call(row_1)];
+                case 12:
+                    _e.sent();
+                    _e.label = 13;
+                case 13: return [3 /*break*/, 15];
+                case 14:
+                    if (e_2) throw e_2.error;
+                    return [7 /*endfinally*/];
+                case 15: return [7 /*endfinally*/];
+                case 16:
+                    raw_date = blob[0].split(".");
+                    date = new Date(raw_date[1] + " " + raw_date[0] + " " + raw_date[2]);
+                    metadata = {
+                        album: blob[4] ? blob[4] : undefined,
+                        songName: blob[3] ? blob[3] : undefined,
+                        specificSource: blob[5] ? blob[5] : undefined
+                    };
+                    parsed.push({
+                        date: date,
+                        quote: blob[1],
+                        source: blob[2],
+                        metadata: blob[3] || blob[4] || blob[5] ? metadata : undefined
                     });
+                    _e.label = 17;
+                case 17: return [3 /*break*/, 3];
+                case 18: return [3 /*break*/, 25];
+                case 19:
+                    e_1_1 = _e.sent();
+                    e_1 = { error: e_1_1 };
+                    return [3 /*break*/, 25];
+                case 20:
+                    _e.trys.push([20, , 23, 24]);
+                    if (!(_d && !_d.done && (_a = _c["return"]))) return [3 /*break*/, 22];
+                    return [4 /*yield*/, _a.call(_c)];
+                case 21:
+                    _e.sent();
+                    _e.label = 22;
+                case 22: return [3 /*break*/, 24];
+                case 23:
+                    if (e_1) throw e_1.error;
+                    return [7 /*endfinally*/];
+                case 24: return [7 /*endfinally*/];
+                case 25:
+                    f.close();
                     return [2 /*return*/, parsed];
             }
         });

@@ -1,7 +1,7 @@
 import "https://raw.githubusercontent.com/daychongyang/dotenv/master/load.ts";
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import { readCSVObjects } from "https://deno.land/x/csv/mod.ts";
-import { QuoteData, QuoteDataRaw } from "./def.ts";
+import { CommonCSVReaderOptions, readCSV } from "https://deno.land/x/csv/mod.ts";
+import { Metadata, QuoteData } from "./def.ts";
 import { StatisticsService } from "./statistics.ts";
 
 const app = new Application();
@@ -25,17 +25,37 @@ app.use(router.allowedMethods());
 await app.listen({ port: PORT });
 
 async function loadTestingData(): Promise<QuoteData[]> {
-    const text = await Deno.readTextFile(Deno.cwd().concat("/src/testing/test.json"));
-    const raw: QuoteDataRaw[] = JSON.parse(text);
     const parsed: QuoteData[] = [];
-    raw.forEach(e => {
-        console.log(e.date)
+
+    const f = await Deno.open(Deno.cwd().concat("/src/testing/quotes.csv"));
+
+    
+    const options: Partial<CommonCSVReaderOptions> = {
+        columnSeparator: ";",
+        lineSeparator: "\r\n",
+        quote: "$",
+    };
+
+    for await (const row of readCSV(f, options)) {
+        const blob = []
+        for await (const cell of row) {
+            blob.push(cell)
+        }
+        const raw_date = blob[0].split(".")
+        const date = new Date(`${raw_date[1]} ${raw_date[0]} ${raw_date[2]}`)
+        const metadata: Metadata = {
+            album: blob[4] ? blob[4] : undefined,
+            songName: blob[3] ? blob[3] : undefined,
+            specificSource: blob[5] ? blob[5] : undefined,
+        }
         parsed.push({
-            quote: e.quote,
-            source: e.source,
-            metadata: e.metadata,
-            date: new Date(e.date),
-        });
-    });
+            date,
+            quote: blob[1],
+            source: blob[2],
+            metadata: blob[3] || blob[4] || blob[5] ? metadata : undefined,
+        })
+    }
+
+    f.close();
     return parsed;
 }

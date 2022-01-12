@@ -1,16 +1,7 @@
-
-export interface QuoteDataRaw {
-    quote: string,
-    date: string,
-    source: "Twitter" | "Live" | "Interview" | "Other" | "Song",
-
-    metadata: undefined | Metadata
-}
-
 export interface QuoteData {
     quote: string,
     date: Date,
-    source: "Twitter" | "Live" | "Interview" | "Other" | "Song",
+    source: string
     metadata: undefined | Metadata
 }
 
