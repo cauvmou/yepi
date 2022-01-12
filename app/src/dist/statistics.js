@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.StatisticsService = void 0;
+var main_ts_1 = require("./main.ts");
 var StatisticsService = /** @class */ (function () {
     function StatisticsService(app) {
         var _this = this;
@@ -44,7 +45,7 @@ var StatisticsService = /** @class */ (function () {
         this.averageTime = 0;
         this.startTime = Date.now();
         this.endTime = Date.now();
-        console.log("Constructing Stats");
+        main_ts_1.logger.info("Constructing Stats");
         app.use(function (_ctx, next) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -58,11 +59,10 @@ var StatisticsService = /** @class */ (function () {
                 }
             });
         }); });
-        console.log("Finished Constructing Stats");
     }
     StatisticsService.prototype.initialize = function (app) {
         var _this = this;
-        console.log("Initializing Stats");
+        main_ts_1.logger.info("Initializing Stats");
         app.use(function (_ctx, next) { return __awaiter(_this, void 0, void 0, function () {
             var time;
             return __generator(this, function (_a) {
@@ -78,7 +78,6 @@ var StatisticsService = /** @class */ (function () {
                 }
             });
         }); });
-        console.log("Finished Initializing Stats");
     };
     StatisticsService.prototype.generate = function () {
         return {
