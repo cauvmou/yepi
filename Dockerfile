@@ -2,8 +2,8 @@ FROM "denoland/deno"
 
 USER deno
 
-WORKDIR /application/yapi
+WORKDIR /application/yepi
 
 COPY ./app/ .
 
-CMD [ "/application/yapi/start.sh" ]
+CMD [ "/application/yepi/start.sh" ]

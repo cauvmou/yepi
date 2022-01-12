@@ -3,7 +3,7 @@ import { HealthzObject } from "./def.ts";
 export class StatisticsService {
 
     numberOfRequests: number = 0;
-    avarageTime: number = 0;
+    averageTime: number = 0;
     startTime: number = Date.now();
     endTime: number = Date.now();
 
@@ -19,31 +19,31 @@ export class StatisticsService {
     }
 
     initialize(app: Application) {
-        console.log("Initialized Stats");
+        console.log("Initializing Stats");
         app.use(async (ctx, next) => {
             this.endTime = Date.now();
             const time = this.endTime - this.startTime;
-            this.avarageTime += time;
+            this.averageTime += time;
 
             await next();
-        })
+        });
 
-        console.log("Finished Initialized Stats");
+        console.log("Finished Initializing Stats");
     }
 
     generate(): HealthzObject {
 
         return {
             InstanceOfRequests: this.numberOfRequests,
-            AverageTime: `${(this.avarageTime/this.numberOfRequests).toFixed(2)}ms`,
-            TimeSpend: `${(Math.abs(this.endTime - this.startTime)).toFixed(2)}ms`,
+            AverageTime: `${(this.averageTime/this.numberOfRequests).toFixed(2)}ms`,
+            TimeSpent: `${(Math.abs(this.endTime - this.startTime)).toFixed(2)}ms`,
         }
     }
 
     route(router: Router) {
         router.get('/api/health', (context) => {
             context.response.body = this.generate();
-        })
+        });
     }
 
 }

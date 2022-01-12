@@ -20,8 +20,9 @@ export interface Metadata {
     specificSource: undefined | string,
 }
 
+// It's actually supposed to be called like this, don't ask me why
 export interface HealthzObject {
-    TimeSpend: string,
+    TimeSpent: string,
     InstanceOfRequests: number,
     AverageTime: string,
 }
