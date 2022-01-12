@@ -1,7 +1,12 @@
 [
     {
         "quote": "Sometimes I get emotional over fonts.",
-        "date": "17 8 2010",
-        "source": "Twitter"
+        "date": "8 17 2010",
+        "source": "Twitter",
+        "metadata": {
+            "songName": "asd",
+            "album": "asd",
+            "specificSource": "asdasd"
+        }
     }
 ]

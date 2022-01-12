@@ -26,7 +26,7 @@ await app.listen({ port: PORT });
 async function loadTestingData(): Promise<QuoteDataDate[]> {
     const text = await Deno.readTextFile(Deno.cwd().concat("/src/testing/test.json"));
     const raw: QuoteData[] = JSON.parse(text);
-    let parsed: QuoteDataDate[] = [];
+    const parsed: QuoteDataDate[] = [];
     raw.forEach(e => {
         console.log(e.date)
         parsed.push({

@@ -11,13 +11,13 @@ export interface QuoteDataDate {
     quote: string,
     date: Date,
     source: "Twitter" | "Live" | "Interview" | "Other" | "Song",
-
     metadata: undefined | Metadata
 }
 
 export interface Metadata {
-    songName: string,
-    timing: string,
+    songName: undefined | string,
+    album: undefined | string,
+    specificSource: undefined | string,
 }
 
 export interface HealthzObject {
